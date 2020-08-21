@@ -1,0 +1,12 @@
+version: "3.7"
+services:
+  tor:
+    build:
+      context: .
+    image: tor:$VERSION
+    container_name: tor
+    ports:
+      - "80:5050"
+    environment:
+      - TARGET=$TARGET
+    restart: unless-stopped
