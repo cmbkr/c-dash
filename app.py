@@ -1,28 +1,285 @@
-
 import os
-
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
+import dash_bootstrap_components as dbc
 import dash_table
 import numpy as np
 import plotly.express as px
-from dash.dependencies import Input
+from dash.dependencies import Input, Output, State
 from dash.dependencies import Output
+from string import Template
 
-from dash_utils import dcc_dropdown_div
-from dash_utils import dcc_range_slider_div
-from dash_utils import message_graph
-from lifetimes_plotly import plotly_history_alive
-from utils import add_probabilities
-from utils import df_filter_between
-from utils import fit_model
-from utils import get_summary_data
-from utils import read_raw_data
+# the style arguments for the sidebar.
+SIDEBAR_STYLE = {
+    'position': 'fixed',
+    'top': 0,
+    'left': 0,
+    'bottom': 0,
+    'width': '20%',
+    'padding': '20px 10px',
+    'background-color': '#f8f9fa'
+}
+
+# the style arguments for the main content page.
+CONTENT_STYLE = {
+    'margin-left': '25%',
+    'margin-right': '5%',
+    'top': 0,
+    'padding': '20px 10px'
+}
+
+TEXT_STYLE = {
+    'textAlign': 'center',
+    'color': '#191970'
+}
+
+CARD_TEXT_STYLE = {
+    'textAlign': 'center',
+    'color': '#0074D9'
+}
 
 
-def main(t):
-    print("This is t:", t)
+def update_card_title_1(n_clicks, dropdown_value, range_slider_value, check_list_value, radio_items_value):
+    print(n_clicks)
+    print(dropdown_value)
+    print(range_slider_value)
+    print(check_list_value)
+    print(radio_items_value)  # Sample data and figure
+    return 'Card Tile 1 change by call back'
+
+
+
+def update_card_text_1(n_clicks, dropdown_value, range_slider_value, check_list_value, radio_items_value):
+    print(n_clicks)
+    print(dropdown_value)
+    print(range_slider_value)
+    print(check_list_value)
+    print(radio_items_value)  # Sample data and figure
+    return 'Card text change by call back'
+
+
+def update_graph_1(n_clicks, dropdown_value, range_slider_value, check_list_value, radio_items_value):
+    print(n_clicks)
+    print(dropdown_value)
+    print(range_slider_value)
+    print(check_list_value)
+    print(radio_items_value)
+    fig = {
+        'data': [{
+            'x': [1, 2, 3],
+            'y': [3, 4, 5]
+        }]
+    }
+    return fig
+
+content_fourth_row = dbc.Row(
+    [
+        dbc.Col(
+            dcc.Graph(id='graph_5'), md=6
+        ),
+        dbc.Col(
+            dcc.Graph(id='graph_6'), md=6
+        )
+    ]
+)
+
+content_third_row = dbc.Row(
+    [
+        dbc.Col(
+            dcc.Graph(id='graph_4'), md=12,
+        )
+    ]
+)
+
+content_second_row = dbc.Row(
+    [
+        dbc.Col(
+            dcc.Graph(id='graph_1'), md=4
+        ),
+        dbc.Col(
+            dcc.Graph(id='graph_2'), md=4
+        ),
+        dbc.Col(
+            dcc.Graph(id='graph_3'), md=4
+        )
+    ]
+)
+
+content_first_row = dbc.Row([
+    dbc.Col(
+        dbc.Card(
+            [
+
+                dbc.CardBody(
+                    [
+                        html.H4(id='card_title_1', children=['Card Title 1'], className='card-title',
+                                style=CARD_TEXT_STYLE),
+                        html.P(id='card_text_1', children=['Sample text.'], style=CARD_TEXT_STYLE),
+                    ]
+                )
+            ]
+        ),
+        md=3
+    ),
+    dbc.Col(
+        dbc.Card(
+            [
+
+                dbc.CardBody(
+                    [
+                        html.H4('Card Title 2', className='card-title', style=CARD_TEXT_STYLE),
+                        html.P('Sample text.', style=CARD_TEXT_STYLE),
+                    ]
+                ),
+            ]
+
+        ),
+        md=3
+    ),
+    dbc.Col(
+        dbc.Card(
+            [
+                dbc.CardBody(
+                    [
+                        html.H4('Card Title 3', className='card-title', style=CARD_TEXT_STYLE),
+                        html.P('Sample text.', style=CARD_TEXT_STYLE),
+                    ]
+                ),
+            ]
+
+        ),
+        md=3
+    ),
+    dbc.Col(
+        dbc.Card(
+            [
+                dbc.CardBody(
+                    [
+                        html.H4('Card Title 4', className='card-title', style=CARD_TEXT_STYLE),
+                        html.P('Sample text.', style=CARD_TEXT_STYLE),
+                    ]
+                ),
+            ]
+        ),
+        md=3
+    )
+])
+
+content = html.Div(
+    [
+        html.H2('Analytics Dashboard Template', style=TEXT_STYLE),
+        html.Hr(),
+        content_first_row,
+        content_second_row,
+        content_third_row,
+        content_fourth_row
+    ],
+    style=CONTENT_STYLE
+)
+
+controls = dbc.FormGroup(
+    [
+        html.P('Dropdown', style={
+            'textAlign': 'center'
+        }),
+        dcc.Dropdown(
+            id='dropdown',
+            options=[{
+                'label': 'Value One',
+                'value': 'value1'
+            }, {
+                'label': 'Value Two',
+                'value': 'value2'
+            },
+                {
+                    'label': 'Value Three',
+                    'value': 'value3'
+                }
+            ],
+            value=['value1'],  # default value
+            multi=True
+        ),
+        html.Br(),
+        html.P('Range Slider', style={
+            'textAlign': 'center'
+        }),
+        dcc.RangeSlider(
+            id='range_slider',
+            min=0,
+            max=20,
+            step=0.5,
+            value=[5, 15]
+        ),
+        html.P('Check Box', style={
+            'textAlign': 'center'
+        }),
+        dbc.Card([dbc.Checklist(
+            id='check_list',
+            options=[{
+                'label': 'Value One',
+                'value': 'value1'
+            },
+                {
+                    'label': 'Value Two',
+                    'value': 'value2'
+                },
+                {
+                    'label': 'Value Three',
+                    'value': 'value3'
+                }
+            ],
+            value=['value1', 'value2'],
+            inline=True
+        )]),
+        html.Br(),
+        html.P('Radio Items', style={
+            'textAlign': 'center'
+        }),
+        dbc.Card([dbc.RadioItems(
+            id='radio_items',
+            options=[{
+                'label': 'Value One',
+                'value': 'value1'
+            },
+                {
+                    'label': 'Value Two',
+                    'value': 'value2'
+                },
+                {
+                    'label': 'Value Three',
+                    'value': 'value3'
+                }
+            ],
+            value='value1',
+            style={
+                'margin': 'auto'
+            }
+        )]),
+        html.Br(),
+        dbc.Button(
+            id='submit_button',
+            n_clicks=0,
+            children='Submit',
+            color='primary',
+            block=True
+        ),
+    ]
+)
+
+sidebar = html.Div(
+    [
+        html.H2('Parameters', style=TEXT_STYLE),
+        html.Hr(),
+        controls
+    ],
+    style=SIDEBAR_STYLE,
+)
+
+
+app = dash.Dash(external_stylesheets=[dbc.themes.BOOTSTRAP])
+app.layout = html.Div([sidebar, content])
+
 
 if __name__ == "__main__":
-    main(76)
+    app.run_server()
