@@ -7,7 +7,6 @@ import dash_table
 import numpy as np
 import plotly.express as px
 from dash.dependencies import Input, Output, State
-from dash.dependencies import Output
 from string import Template
 
 # the style arguments for the sidebar.
