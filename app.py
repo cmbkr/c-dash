@@ -289,9 +289,5 @@ sidebar = html.Div(
 app = dash.Dash(external_stylesheets=[dbc.themes.BOOTSTRAP])
 app.layout = html.Div([sidebar, content])
 
-
-if __name__ == "__main__":
-    app.run_server()
-
 if __name__ == '__main__':
     app.run_server(port=8050)
