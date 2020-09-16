@@ -1,9 +1,8 @@
-FROM python:3.6
-USER root
-WORKDIR /app
-ADD . /app
-RUN pip install --trusted-host pypi.python.org -r requirements.txt
+FROM python:3.9.0rc1-buster
 
-EXPOSE 8050
-ENV NAME C-DASH
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install -r requirements.txt
+COPY /app .
+
 CMD ["python", "app.py"]

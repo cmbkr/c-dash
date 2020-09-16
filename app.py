@@ -10,13 +10,7 @@ from dash.dependencies import Input, Output, State
 from string import Template
 import flask
 
-external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
-
-server = flask.Flask(__name__)
-app = dash.Dash(__name__, server=server,external_stylesheets=external_stylesheets)
-app.config.suppress_callback_exceptions = True
-
-
+# external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
 
 # the style arguments for the sidebar.
@@ -286,8 +280,11 @@ sidebar = html.Div(
 )
 
 
-app = dash.Dash(external_stylesheets=[dbc.themes.BOOTSTRAP])
+server = flask.Flask(__name__)
+app = dash.Dash(__name__, server=server, external_stylesheets=[dbc.themes.BOOTSTRAP])
+app.config.suppress_callback_exceptions = True
 app.layout = html.Div([sidebar, content])
 
+
 if __name__ == '__main__':
-    app.run_server(port=8050)
+    app.run_server(host='0.0.0.0', port=80)
