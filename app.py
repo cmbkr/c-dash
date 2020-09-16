@@ -4,10 +4,7 @@ import dash_core_components as dcc
 import dash_html_components as html
 import dash_bootstrap_components as dbc
 import dash_table
-import numpy as np
-import plotly.express as px
 from dash.dependencies import Input, Output, State
-from string import Template
 import flask
 
 # external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
