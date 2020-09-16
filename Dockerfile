@@ -1,13 +1,9 @@
-FROM python:3.7.6
-RUN mkdir /app
-COPY . /app
+FROM python:3.6
+USER root
 WORKDIR /app
-RUN pip install -r requirements.txt
+ADD . /app
+RUN pip install --trusted-host pypi.python.org -r requirements.txt
 
-
-ENV dash_debug="False"
-ENV dash_host="0.0.0.0"
-ENV dash_port=80
 EXPOSE 80
-
+ENV NAME C-DASH
 CMD ["python", "app.py"]

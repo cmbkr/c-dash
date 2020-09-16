@@ -1,10 +1,10 @@
 version: "3.7"
 services:
-  tor:
+  c-dash:
     build:
       context: .
-    image: tor:$VERSION
-    container_name: tor
+    image: c-dash:$VERSION
+    container_name: c-dash
     ports:
       - "80:5050"
     environment:
